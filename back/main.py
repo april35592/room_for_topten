@@ -40,6 +40,27 @@ async def join_room(room_id: str, order: int):
         raise HTTPException(status_code=404, detail="Room not found")
 
 
+@app.delete("/delete/{room_id}")
+async def delete_room(room_id: str):
+    await routes.delete_room(room_id)
+    return (f'{room_id}가 모두 제거되었습니다')
+
+
+@app.patch("/username/{user_id}")
+async def edit_username(user_id: str, username: str = Form()):
+    await routes.edit_username(user_id, username)
+
+
+@app.patch("/question/{user_id}")
+async def edit_question(user_id: str, question: str = Form()):
+    await routes.edit_question(user_id, question)
+
+
+@app.patch("/answer/{memo_id}")
+async def edit_answer(memo_id: str, answer: str = Form()):
+    await routes.edit_answer(memo_id, answer)
+
+
 @app.get("/lastedit/{room_id}/{last_edit}")
 async def check_lastedit(room_id: str, last_edit: str):
     datetime_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"

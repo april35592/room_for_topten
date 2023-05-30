@@ -6,6 +6,12 @@ import json
 
 class Routes:
 
+    async def make_room(self, games: list, order: int):
+        game = []
+        for num in games:
+            game.append(num[order])
+        return game
+
     async def create_room(self, user_number: int):
         # id 생성
         newIDli = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
@@ -62,11 +68,23 @@ class Routes:
         else:
             return None
 
-    async def make_room(self, games: list, order: int):
-        game = []
-        for num in games:
-            game.append(num[order])
-        return game
+    async def delete_room(self, room_id: str):
+        mongodb.db.room.delete_one({'id': room_id})
+        mongodb.db.user.delete_many({'room_id': room_id})
+        mongodb.db.memo.delete_many({'room_id': room_id})
+        mongodb.db.chat.delete_many({'room_id': room_id})
+
+    async def edit_username(self, user_id: str, username: str):
+        mongodb.db.user.update_one(
+            {'id': user_id}, {'$set': {'username': username}})
+
+    async def edit_question(self, user_id: str, question: str):
+        mongodb.db.user.update_one(
+            {'id': user_id}, {'$set': {'question': question}})
+
+    async def edit_answer(self, memo_id: str, answer: str):
+        mongodb.db.memo.update_one(
+            {'id': memo_id}, {'$set': {'answer': answer}})
 
     async def check_lastedit(self, room_id: str, last_edit: datetime):
         room = mongodb.db.room.find_one({"id": room_id})
@@ -79,7 +97,7 @@ class Routes:
         last_edit = mongodb.db.room.find_one({'id': room_id})['last_edit']
         print(last_edit)
         user = list(mongodb.db.user.find(
-            {'room_id': room_id}, {'_id': 0, 'order': 1, 'username': 1, 'question': 1}))
+            {'room_id': room_id}, {'_id': 0, 'id': 1, 'username': 1, 'question': 1}))
         memo = list(mongodb.db.memo.find({'room_id': room_id}, {
             '_id': 0, 'id': 1, 'answer': 1}))
         chat = list(mongodb.db.chat.find(
