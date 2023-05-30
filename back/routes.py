@@ -1,7 +1,6 @@
 from models import mongodb
 import datetime
 import random
-import json
 
 
 class Routes:
@@ -74,18 +73,6 @@ class Routes:
         mongodb.db.memo.delete_many({'room_id': room_id})
         mongodb.db.chat.delete_many({'room_id': room_id})
 
-    async def edit_username(self, user_id: str, username: str):
-        mongodb.db.user.update_one(
-            {'id': user_id}, {'$set': {'username': username}})
-
-    async def edit_question(self, user_id: str, question: str):
-        mongodb.db.user.update_one(
-            {'id': user_id}, {'$set': {'question': question}})
-
-    async def edit_answer(self, memo_id: str, answer: str):
-        mongodb.db.memo.update_one(
-            {'id': memo_id}, {'$set': {'answer': answer}})
-
     async def check_lastedit(self, room_id: str, last_edit: datetime):
         room = mongodb.db.room.find_one({"id": room_id})
         if last_edit == room['last_edit']:
@@ -104,8 +91,23 @@ class Routes:
             {'room_id': room_id}, {'_id': 0, 'user_id': 1, 'create_at': 1, 'text': 1}))
         return {'last_edit': last_edit, 'user': user, 'memo': memo, 'chat': chat}
 
-    async def chat(self, room_id: str, user_id: str, chat: str):
+    async def edit_username(self, user_id: str, username: str):
+        mongodb.db.user.update_one(
+            {'id': user_id}, {'$set': {'username': username}})
+
+    async def edit_question(self, user_id: str, question: str):
+        mongodb.db.user.update_one(
+            {'id': user_id}, {'$set': {'question': question}})
+
+    async def edit_answer(self, memo_id: str, answer: str):
+        mongodb.db.memo.update_one(
+            {'id': memo_id}, {'$set': {'answer': answer}})
+        mongodb.db.room.update_one({'id': memo_id[0:4]}, {
+                                   '$set': {'last_edit': datetime.datetime.now()}})
+
+    async def chat(self, user_id: str, chat: str):
         now = datetime.datetime.now()
+        room_id = user_id[0:4]
         chat = dict(
             room_id=room_id,
             user_id=user_id,

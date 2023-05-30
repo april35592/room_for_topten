@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 
-@app.post("/create/{user_number}")
+@app.post("/{user_number}")
 async def create_room(user_number: int):
     if (2 < user_number < 10):
         [room_id, user_id, games] = await routes.create_room(user_number)
@@ -29,8 +29,8 @@ async def create_room(user_number: int):
         raise HTTPException(status_code=400, detail='out of range')
 
 
-@app.get("/join/{room_id}/{order}")
-async def join_room(room_id: str, order: int):
+@app.get("/{room_id}")
+async def join_room(room_id: str, order: int = Form()):
     order -= 1
     try:
         [user_id, games] = await routes.join_room(room_id, order)
@@ -40,7 +40,19 @@ async def join_room(room_id: str, order: int):
         raise HTTPException(status_code=404, detail="Room not found")
 
 
-@app.delete("/delete/{room_id}")
+@app.get("/{room_id}/{last_edit}")
+async def check_lastedit(room_id: str, last_edit: str):
+    result = await routes.load_lastedit(room_id)
+    if result:
+        datetime_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
+        last_edit = datetime.datetime.strptime(last_edit, datetime_format)
+        update = await routes.check_lastedit(room_id, last_edit)
+        return update
+    else:
+        return None
+
+
+@app.delete("/{room_id}")
 async def delete_room(room_id: str):
     await routes.delete_room(room_id)
     return (f'{room_id}가 모두 제거되었습니다')
@@ -61,23 +73,9 @@ async def edit_answer(memo_id: str, answer: str = Form()):
     await routes.edit_answer(memo_id, answer)
 
 
-@app.get("/lastedit/{room_id}/{last_edit}")
-async def check_lastedit(room_id: str, last_edit: str):
-    datetime_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
-    last_edit = datetime.datetime.strptime(last_edit, datetime_format)
-    update = await routes.check_lastedit(room_id, last_edit)
-    return update
-
-
-@app.get("/load/{room_id}")
-async def load_lastedit(room_id: str):
-    result = await routes.load_lastedit(room_id)
-    return result
-
-
-@app.post("/chat/{room_id}/{user_id}")
-async def chat(room_id: str, user_id: str, chat: str = Form()):
-    await routes.chat(room_id, user_id, chat)
+@app.post("/chat/{user_id}")
+async def chat(user_id: str, chat: str = Form()):
+    await routes.chat(user_id, chat)
 
 
 @app.on_event("startup")
