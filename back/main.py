@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from routes import Routes
 from models import mongodb
+import datetime
 
 app = FastAPI()
 routes = Routes()
@@ -18,22 +19,44 @@ app.add_middleware(
 )
 
 
-@app.post("/create")
-async def create_room(user_number: int = Form()):
-    number = await routes.create_room(user_number)
-    return number
+@app.post("/create/{user_number}")
+async def create_room(user_number: int):
+    if (2 < user_number < 10):
+        [room_id, user_id, games] = await routes.create_room(user_number)
+        game = await routes.make_room(games, 0)
+        return {'user_id': user_id, 'room_id': room_id, 'game': game}
+    else:
+        raise HTTPException(status_code=400, detail='out of range')
 
 
-@app.get("/{room_id}/{order}")
+@app.get("/join/{room_id}/{order}")
 async def join_room(room_id: str, order: int):
-    number = await routes.join_room(room_id, order)
-    return number
+    order -= 1
+    try:
+        [user_id, games] = await routes.join_room(room_id, order)
+        game = await routes.make_room(games, order)
+        return {'user_id': user_id, 'room_id': room_id, 'game': game}
+    except:
+        raise HTTPException(status_code=404, detail="Room not found")
 
 
-@app.get("/{room_id}/lastedit/{last_edit}")
+@app.get("/lastedit/{room_id}/{last_edit}")
 async def check_lastedit(room_id: str, last_edit: str):
+    datetime_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
+    last_edit = datetime.datetime.strptime(last_edit, datetime_format)
     update = await routes.check_lastedit(room_id, last_edit)
     return update
+
+
+@app.get("/load/{room_id}")
+async def load_lastedit(room_id: str):
+    result = await routes.load_lastedit(room_id)
+    return result
+
+
+@app.post("/chat/{room_id}/{user_id}")
+async def chat(room_id: str, user_id: str, chat: str = Form()):
+    await routes.chat(room_id, user_id, chat)
 
 
 @app.on_event("startup")
