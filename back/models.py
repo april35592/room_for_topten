@@ -1,7 +1,6 @@
-from motor.motor_asyncio import AsyncIOMotorClient
-from odmantic import AIOEngine
 
-from config import MONGO_DB_NAME, MONGO_DB_URL
+from pymongo import MongoClient
+import certifi
 
 
 class MongoDB:
@@ -10,8 +9,9 @@ class MongoDB:
         self.engine = None
 
     def connect(self):
-        self.client = AsyncIOMotorClient(MONGO_DB_URL)
-        self.engine = AIOEngine(client=self.client, database=MONGO_DB_NAME)
+        self.client = MongoClient(
+            "mongodb://localhost:27017")
+        self.db = self.client['TOPTEN']
         print("DB와 연결되었습니다.")
 
     def close(self):
