@@ -1,0 +1,132 @@
+.join {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.joinInputTray {
+  width: calc(100% - 20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.joinInputTray > p {
+  width: 30px;
+  text-align: center;
+}
+
+.joinInput {
+  width: calc(100% - 220px);
+  height: 40px;
+  margin: 10px;
+  border-radius: 15px;
+  background-color: white;
+  border: 3px solid black;
+}
+
+.joinInputPaste {
+  width: 100px;
+  height: 40px;
+  border-radius: 15px;
+  background-color: white;
+  border: 3px solid black;
+  color: black;
+  margin-right: 10px;
+}
+
+.joinInputSubmit {
+  width: 60px;
+  height: 40px;
+  border-radius: 15px;
+  background-color: black;
+  color: white;
+}
+
+.joinBtn {
+  width: 150px;
+  height: 40px;
+  margin: 10px;
+  border-radius: 15px;
+  background-color: black;
+  color: white;
+  box-shadow: inset 0 0 0 3px black, inset 0 0 0 5px white;
+}
+
+.whatYourOrder,
+.whatJoinOrder {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.orderBtnGroup {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.orderBtnGroup > div {
+  width: 100%;
+  display: flex;
+}
+
+.orderBtn {
+  width: 25%;
+  height: 80px;
+  color: white;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p > .orderBtn {
+  width: auto;
+  height: auto;
+  color: black;
+  background-color: unset;
+  display: inline;
+}
+
+.whatOrder {
+  width: 100%;
+}
+
+.orderBtnGroup > div:nth-child(2n + 1) > .orderBtn:nth-child(2n),
+.orderBtnGroup > div:nth-child(2n) > .orderBtn:nth-child(2n + 1) {
+  color: black;
+  background-color: white;
+}
+
+.orderBtnGroup > div > .orderBtn.select {
+  background-color: black;
+  border: 3px solid black;
+  color: white;
+  box-shadow: inset 0 0 0 2px white;
+}
+
+.orderBtnGroup > div:nth-child(2n + 1) > .orderBtn.select:nth-child(2n),
+.orderBtnGroup > div:nth-child(2n) > .orderBtn.select:nth-child(2n + 1) {
+  background-color: white;
+  border: 2px solid white;
+  color: black;
+  box-shadow: inset 0 0 0 3px black;
+}
+
+p > .orderBtn.select {
+  color: rgb(182, 212, 224);
+}
+
+.orderBtnGroup > div > .orderBtn.disabled {
+  background-color: grey;
+  color: darkgrey;
+  box-shadow: unset !important;
+  border: unset;
+}
+
+.orderBtnGroup > div:nth-child(2n + 1) > .orderBtn.disabled:nth-child(2n),
+.orderBtnGroup > div:nth-child(2n) > .orderBtn.disabled:nth-child(2n + 1) {
+  background-color: darkgrey;
+  color: grey;
+}

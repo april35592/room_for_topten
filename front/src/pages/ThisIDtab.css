@@ -1,0 +1,23 @@
+.thisIDtab {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.thisIDtab p {
+  color: white;
+}
+
+.thisID {
+  width: 85%;
+  height: 40px;
+  margin: 10px;
+  border-radius: 15px;
+  background-color: black;
+  color: white;
+  border: 3px solid white;
+  background: linear-gradient(to right, #7ee8fa, #eec0c6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
