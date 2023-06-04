@@ -3,7 +3,7 @@ import datetime
 import random
 
 
-class Routes:
+class Views:
 
     async def make_room(self, games: list, order: int):
         game = []
@@ -80,15 +80,14 @@ class Routes:
         else:
             return True
 
-    async def load_lastedit(self, room_id):
+    async def load_lastedit(self, room_id, before_edit):
         last_edit = mongodb.db.room.find_one({'id': room_id})['last_edit']
-        print(last_edit)
         user = list(mongodb.db.user.find(
             {'room_id': room_id}, {'_id': 0, 'id': 1, 'username': 1, 'question': 1}))
         memo = list(mongodb.db.memo.find({'room_id': room_id}, {
             '_id': 0, 'id': 1, 'answer': 1}))
         chat = list(mongodb.db.chat.find(
-            {'room_id': room_id}, {'_id': 0, 'user_id': 1, 'create_at': 1, 'text': 1}))
+            {'room_id': room_id, 'create_at': {'$gt': before_edit}}, {'_id': 0, 'user_id': 1, 'create_at': 1, 'text': 1}))
         return {'last_edit': last_edit, 'user': user, 'memo': memo, 'chat': chat}
 
     async def edit_username(self, user_id: str, username: str):
