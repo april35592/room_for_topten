@@ -1,5 +1,11 @@
+import Create from "./create/page";
+
 const Home = () => {
-  return <main>Hello World</main>;
+  return (
+    <>
+      <Create />
+    </>
+  );
 };
 
 export default Home;

@@ -1,4 +1,5 @@
-import "./globals.css";
+import "@/styles/globals.css";
+import Header from "@/components/header";
 
 export const metadata = {
   title: "TOPTEN",
@@ -8,7 +9,12 @@ export const metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <div className="container">
+          <Header />
+          {children}
+        </div>
+      </body>
     </html>
   );
 };

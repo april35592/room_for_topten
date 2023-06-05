@@ -70,8 +70,8 @@ async def create_room(user_number: int):
         raise HTTPException(status_code=400, detail='out of range')
 
 
-@app.get("/{room_id}")
-async def join_room(room_id: str, order: int = Form()):
+@app.get("/{room_id}/{order}")
+async def join_room(room_id: str, order: int):
     order -= 1
     try:
         [user_id, games] = await views.join_room(room_id, order)
