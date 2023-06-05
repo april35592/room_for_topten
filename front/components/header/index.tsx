@@ -1,16 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { Head, Title, HowTo } from "./styles";
 
 const Header = () => {
   return (
-    <header>
+    <Head>
       <Link href="/">
-        <div className="title">
-          <h1>TOP TEN</h1>
-        </div>
+        <Title>TOP TEN</Title>
       </Link>
-
-      <button className="howBtn">How To?</button>
-    </header>
+      <HowTo>How To?</HowTo>
+    </Head>
   );
 };
 

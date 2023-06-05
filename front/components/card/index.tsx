@@ -1,5 +1,7 @@
 "use client";
+
 import { useState } from "react";
+import { CardTray, CardForm, Btn } from "./styles";
 
 const Card = ({ game = [] }) => {
   const [number, setNumber] = useState(1);
@@ -17,15 +19,11 @@ const Card = ({ game = [] }) => {
   };
 
   return (
-    <div>
-      <button className="leftCard" onClick={tabLeft}>
-        &lt;
-      </button>
-      <div width="200px">{game[number - 1]}</div>
-      <button className="rightCard" onClick={tabRight}>
-        &gt;
-      </button>
-    </div>
+    <CardTray>
+      <Btn onClick={tabLeft}>&lt;</Btn>
+      <CardForm>{game[number - 1]}</CardForm>
+      <Btn onClick={tabRight}>&gt;</Btn>
+    </CardTray>
   );
 };
 

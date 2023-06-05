@@ -1,18 +1,25 @@
+"use client";
+
 import React from "react";
 import { use } from "react";
+import { useSearchParams } from "next/navigation";
 import Card from "@/components/card";
 
-const Main = ({ room_id = "mpqg" }) => {
-  if (room_id === "") {
+const Main = () => {
+  const searchParams = useSearchParams();
+  const room_id = searchParams.get("room_id");
+  const user_id = searchParams.get("user_id");
+
+  if (!room_id) {
     return <div>잘못된 경로입니다</div>;
   } else {
-    const lender = use(lendering(room_id));
-    const game = lender.game;
+    const data = use(lendering(room_id));
+    const game = data.game;
 
     return (
-      <div>
+      <>
         <Card game={game} />
-      </div>
+      </>
     );
   }
 };
