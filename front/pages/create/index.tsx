@@ -1,11 +1,12 @@
 import React from 'react';
 
 import SelectTab from '@components/select_tab';
+import CreateRoom from '@components/create_room';
 
 const Create = () => {
   return (
     <>
-      Create
+      <CreateRoom />
       <SelectTab active="create" />
     </>
   );

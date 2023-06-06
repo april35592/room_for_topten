@@ -5,6 +5,7 @@ import Join from '@pages/join';
 import Room from '@pages/room';
 import Header from '@components/header';
 import NotFound from '@pages/not_found';
+import './global.css';
 
 const Home = () => {
   return (
