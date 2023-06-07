@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Div, SetNumber, SetNumberNow, SetNumberBtn, CreateBtn } from './styles';
 
 import Loading from '@components/loading';
 
@@ -29,15 +30,15 @@ const CreateRoom = () => {
   return loading ? (
     <Loading />
   ) : (
-    <>
+    <Div>
       <p>인원수</p>
-      <div>
-        <button onClick={lowerCount}>-</button>
-        <div>{count}</div>
-        <button onClick={upperCount}>+</button>
-      </div>
-      <button onClick={create_room}>게임 생성</button>
-    </>
+      <SetNumber>
+        <SetNumberBtn onClick={lowerCount}>-</SetNumberBtn>
+        <SetNumberNow>{count}</SetNumberNow>
+        <SetNumberBtn onClick={upperCount}>+</SetNumberBtn>
+      </SetNumber>
+      <CreateBtn onClick={create_room}>게임 생성</CreateBtn>
+    </Div>
   );
 };
 

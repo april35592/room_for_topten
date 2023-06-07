@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import Home from '@pages/home/index';
+import Home from '@pages/home';
 
 const App = () => {
   return (

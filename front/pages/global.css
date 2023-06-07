@@ -9,8 +9,8 @@
   --theme-white: #ffffff;
   --size-half: 5px;
   --size-base: 10px;
-  --font-family-base: ` 'Noto Sans KR', sans-serif`;
-  --font-family-title: ` 'Black Han Sans' `;
+  --font-family-base: 'Noto Sans KR', 'sans-serif';
+  --font-family-title: 'Black Han Sans';
   --font-size-sm: 12px;
   --font-size-base: 15px;
   --font-size-lg: 32px;
@@ -41,13 +41,18 @@
 }
 
 body {
-  display: flex;
-  justify-content: center;
   background-color: var(--theme-back);
   background: linear-gradient(to right, var(--theme-skyblue), var(--theme-indipink));
 }
 
 #root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+#container {
   width: 600px;
   height: 100vh;
   background-color: var(--theme-back);

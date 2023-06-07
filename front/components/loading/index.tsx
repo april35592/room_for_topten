@@ -1,7 +1,8 @@
 import React from 'react';
+import { P } from './style';
 
 const Loading = () => {
-  return <p>Loading</p>;
+  return <P>Loading...</P>;
 };
 
 export default Loading;

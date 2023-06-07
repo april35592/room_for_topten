@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 
 import { Head, Title, HowTo } from './styles';
 
-const Header = () => {
+interface Props {
+  openHow: () => void;
+}
+
+const Header = ({ openHow }: Props) => {
   return (
     <Head>
       <Link to="/">
         <Title>TOP TEN</Title>
       </Link>
-      <HowTo>How To?</HowTo>
+      <HowTo onClick={openHow}>How To?</HowTo>
     </Head>
   );
 };
