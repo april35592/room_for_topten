@@ -72,7 +72,7 @@ async def edit_question(user_id: str, question: str = Form()):
 @app.patch("/answer/{memo_id}")
 async def edit_answer(memo_id: str, answer: str = Form()):
     await views.edit_answer(memo_id, answer)
-    manager.broadcast(user_id[0, 4], f"{user_id}'s answer : {user_id}")
+    manager.broadcast(memo_id[0, 4], f"{memo_id[0,6]}'s answer : {answer}")
 
 
 @app.on_event("startup")
