@@ -12,27 +12,33 @@ export const Div = styled.div`
 
   section {
     display: flex;
-    border: 3px solid black;
+    border: 3px solid var(--theme-fore);
     border-radius: 20px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 500px;
     height: 500px;
-    background-color: white;
+    background-color: var(--theme-back);
 
     button {
       width: 150px;
       height: 40px;
       margin: 10px;
       border-radius: 15px;
-      background-color: white;
-      border: 3px solid black;
+      background-color: var(--theme-back);
+      border: 3px solid var(--theme-fore);
     }
   }
 `;
 
 export const Article = styled.div`
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   width: calc(100% - 30px);
   height: 440px;
   padding: 20px;

@@ -1,11 +1,12 @@
 import React from 'react';
 
+import JoinRoom from '@components/join_room';
 import SelectTab from '@components/select_tab';
 
 const Join = () => {
   return (
     <>
-      Join
+      <JoinRoom />
       <SelectTab active="join" />
     </>
   );
