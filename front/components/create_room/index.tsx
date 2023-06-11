@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Div, SetNumber, SetNumberNow, SetNumberBtn, CreateBtn } from './styles';
 
 import Loading from '@components/loading';
+import URL from '@data/url';
 
 const CreateRoom = () => {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ const CreateRoom = () => {
 
   const create_room = async () => {
     setLoading(true);
-    const data = await lendering(count);
-    navigate(`/room/${data.room_id}/${data.user_id}`);
+    const data = await create(count);
+    navigate(`/room/${data.room_id}`);
   };
 
   return loading ? (
@@ -42,15 +43,17 @@ const CreateRoom = () => {
   );
 };
 
-export const lendering = async (user_number = 0) => {
-  return await fetch(`http://43.201.59.195/${user_number}`, {
-    method: 'POST',
-    cache: 'no-store',
-  })
-    .then((res) => {
+export const create = async (user_number = 0) => {
+  if (10 > user_number && user_number > 2) {
+    return await fetch(`http://${URL.server_url}/${user_number}`, {
+      method: 'POST',
+      cache: 'no-store',
+    }).then((res) => {
       return res.json();
-    })
-    .then((json) => json);
+    });
+  } else {
+    return 'err count';
+  }
 };
 
 export default CreateRoom;

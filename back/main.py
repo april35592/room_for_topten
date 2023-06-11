@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Form, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.websockets import WebSocketDisconnect
+from typing import Optional
+import json
 
 from views import Views, ConnectionManager
 from models import mongodb
@@ -21,16 +23,20 @@ app.add_middleware(
 
 
 @app.websocket("/manager/{room_id}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str):
-    games = await mongodb.db.room.find_one({"id": room_id}, {"_id": 0, "id": 1, "user_number": 1, "games": 1})
-    room_id = games.id
+async def websocket_endpoint(websocket: WebSocket, room_id: str, order: Optional[int] = -1):
+    games = mongodb.db.room.find_one(
+        {"id": room_id}, {"_id": 0, "id": 1, "user_number": 1})
+    room_id = games["id"]
     user_id = await manager.connect(websocket, games)
+    manager.send_personal_message(websocket, f"myID: {user_id}")
     manager.broadcast(room_id, f"entry: {user_id}")
     try:
         while True:
+            print('ws 작동중')
             data = await websocket.receive_text()
-            manager.broadcast(room_id, f"chat : {data}")
-            views.chat(user_id, data)
+            print('mssage 수신')
+            await manager.broadcast(room_id, f"chat : {data}")
+            await views.chat(user_id, data)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
         manager.broadcast(room_id, f"exit : {user_id}")
@@ -41,18 +47,18 @@ async def create_room(user_number: int):
     if (2 < user_number < 10):
         [room_id, user_id, games] = await views.create_room(user_number)
         game = await views.make_room(games, 0)
-        return {"user_id": user_id, "room_id": room_id, "game": game}
+        return {"room_id": room_id, "user_id": user_id, "game": game}
     else:
         raise HTTPException(status_code=400, detail="out of range")
 
 
-@app.get("/{room_id}/{order}")
-async def join_room(room_id: str, order: int):
-    order -= 1
+@app.get("/{room_id}/{user_id}")
+async def join_room(room_id: str, user_id: str):
+    order = int(user_id[5])
     try:
-        [user_id, games] = await views.join_room(room_id, order)
+        games = await views.join_room(room_id)
         game = await views.make_room(games, order)
-        return {"user_id": user_id, "room_id": room_id, "game": game}
+        return {"room_id": room_id, "user_id": user_id, "game": game}
     except:
         raise HTTPException(status_code=404, detail="Room not found")
 

@@ -12,7 +12,8 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"]
+      "@pages/*": ["pages/*"],
+      "@data/*": ["data/*"]
     }
   },
   "ts-node": {

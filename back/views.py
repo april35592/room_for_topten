@@ -7,10 +7,10 @@ import random
 
 class Views:
 
-    def make_room(self, games: list, order: int):
+    async def make_room(self, games: list, order: int):
         game = []
-        for num in games:
-            game.append(num[order])
+        for arr in games:
+            game.append(arr[order])
         return game
 
     async def create_room(self, user_number: int):
@@ -65,10 +65,11 @@ class Views:
                 mongodb.db.memo.insert_one(memo)
         return [id, f"{id}_0", games]
 
-    async def join_room(self, room_id: str, order: int):
-        result = mongodb.db.room.find_one({"id": room_id})
-        if result:
-            return [f"{id}_{order}", result["games"]]
+    async def join_room(self, room_id: str):
+        result = mongodb.db.room.find_one(
+            {"id": room_id}, {"_id": 0, "games": 1})["games"]
+        if len(result) > 0:
+            return result
         else:
             return None
 
@@ -116,15 +117,20 @@ class ConnectionManager:
         self.delete_timer: dict[object] = dict()
 
     async def connect(self, websocket: WebSocket, games: dict):
-        if self.active_connections[games.id].len() > games.user_number:
+        room_id = games["id"]
+        if room_id not in self.active_connections:
+            self.active_connections[room_id] = {}
+        if len(self.active_connections[room_id]) > int(games["user_number"]):
             return "Too many client"
-        for index in range(1, games.user_number + 1):
-            if index not in self.active_connections[games.id]:
-                self.active_connections[games.id][index] = websocket
-                if games.id in self.delete_timer:  # 삭제 예정이었던 방의 경우 delete room counter 초기화
-                    del self.delete_timer[games.id]
+        for index in range(int(games["user_number"])):
+            if index not in self.active_connections[room_id]:
+                self.active_connections[room_id][index] = websocket
+                if room_id in self.delete_timer:  # 삭제 예정이었던 방의 경우 delete room counter 초기화
+                    del self.delete_timer[room_id]
+                print('ws연결중')
                 await websocket.accept()
-                return f'{games.id}_{index}'
+                print('ws연결성공')
+                return f'{room_id}_{index}'
 
     def disconnect(self, websocket: WebSocket, room_id: str):
         for key in self.active_connections[room_id]:
@@ -152,9 +158,9 @@ class ConnectionManager:
         await mongodb.db.room.insert_one(
             dict(
                 id=room_id,
-                first_edit=games.first_edit,
-                last_edit=games.last_edit,
-                games=games.games,
+                first_edit=games["first_edit"],
+                last_edit=games["last_edit"],
+                games=games["games"],
                 users=user,
                 memo=memo,
                 chat=chat
@@ -167,7 +173,7 @@ class ConnectionManager:
 
     async def broadcast(self, room_id: str, message: str):
         for connection in self.active_connections[room_id]:
-            await connection.send_text(message)
+            await self.active_connections[room_id][connection].send_text(message)
 
     async def send_personal_message(self, websocket: WebSocket, message: str):
         await websocket.send_text(message)

@@ -27,7 +27,7 @@ const Home = () => {
         <Routes>
           <Route path="/" element={<Create />} />
           <Route path="/join" element={<Join />} />
-          <Route path="/room/:room_id/:user_id" element={<Room />} />
+          <Route path="/room/:room_id" element={<Room />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
