@@ -27,14 +27,12 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, order: Optional
     games = mongodb.db.room.find_one(
         {"id": room_id}, {"_id": 0, "id": 1, "user_number": 1})
     room_id = games["id"]
-    user_id = await manager.connect(websocket, games)
-    manager.send_personal_message(websocket, f"myID: {user_id}")
+    user_id = await manager.connect(websocket, games, order)
+    manager.personal_message(websocket, f"myID: {user_id}")
     manager.broadcast(room_id, f"entry: {user_id}")
     try:
         while True:
-            print('ws 작동중')
             data = await websocket.receive_text()
-            print('mssage 수신')
             await manager.broadcast(room_id, f"chat : {data}")
             await views.chat(user_id, data)
     except WebSocketDisconnect:

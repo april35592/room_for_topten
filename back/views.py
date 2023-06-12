@@ -116,7 +116,7 @@ class ConnectionManager:
         self.active_connections: dict[dict[WebSocket]] = dict()
         self.delete_timer: dict[object] = dict()
 
-    async def connect(self, websocket: WebSocket, games: dict):
+    async def connect(self, websocket: WebSocket, games: dict, order: int):
         room_id = games["id"]
         if room_id not in self.active_connections:
             self.active_connections[room_id] = {}
@@ -175,5 +175,5 @@ class ConnectionManager:
         for connection in self.active_connections[room_id]:
             await self.active_connections[room_id][connection].send_text(message)
 
-    async def send_personal_message(self, websocket: WebSocket, message: str):
+    async def personal_message(self, websocket: WebSocket, message: str):
         await websocket.send_text(message)
