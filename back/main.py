@@ -26,18 +26,34 @@ app.add_middleware(
 async def websocket_endpoint(websocket: WebSocket, room_id: str, order: Optional[int] = -1):
     games = mongodb.db.room.find_one(
         {"id": room_id}, {"_id": 0, "id": 1, "user_number": 1})
-    room_id = games["id"]
-    user_id = await manager.connect(websocket, games, order)
-    manager.personal_message(websocket, f"myID: {user_id}")
-    manager.broadcast(room_id, f"entry: {user_id}")
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await manager.broadcast(room_id, f"chat : {data}")
-            await views.chat(user_id, data)
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        manager.broadcast(room_id, f"exit : {user_id}")
+    if (order == -1):
+        if (len(games) < 1):
+            raise HTTPException(status_code=404, detail="not found page")
+        user = manager.current(room_id)
+        print(room_id + ' : ')
+        print(user)
+        if len(user) > int(games["user_number"]):
+            raise HTTPException(status_code=403, detail="too many users")
+
+    for index in range(int(games["user_number"])):
+        if index not in user:
+            user_id = f"{room_id}_{index}"
+            print(f"ws연결중 : {user_id}")
+            await manager.connect(websocket, games, index)
+            try:
+                await websocket.receive_text()
+                print(f"ws연결완료 : {user_id}")
+                await manager.personal_message(websocket, f"myID : {user_id}")
+                await manager.broadcast(room_id, f"entry : {user_id}")
+                while True:
+                    data = await websocket.receive_text()
+                    await manager.broadcast(room_id, f"{user_id} chat : {data}")
+                    await views.chat(user_id, data)
+
+            except WebSocketDisconnect:
+                print(f"exit : {user_id}")
+                manager.disconnect(websocket)
+                await manager.broadcast(room_id, f"exit : {user_id}")
 
 
 @app.post("/{user_number}")
@@ -47,7 +63,7 @@ async def create_room(user_number: int):
         game = await views.make_room(games, 0)
         return {"room_id": room_id, "user_id": user_id, "game": game}
     else:
-        raise HTTPException(status_code=400, detail="out of range")
+        raise HTTPException(status_code=406, detail="out of range")
 
 
 @app.get("/{room_id}/{user_id}")

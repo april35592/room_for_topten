@@ -5,9 +5,9 @@ import Home from '@pages/home';
 
 const App = () => {
   return (
-    <React.StrictMode>
-      <Home />
-    </React.StrictMode>
+    // <React.StrictMode>
+    <Home />
+    //</React.StrictMode>
   );
 };
 

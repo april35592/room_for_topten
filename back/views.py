@@ -116,21 +116,20 @@ class ConnectionManager:
         self.active_connections: dict[dict[WebSocket]] = dict()
         self.delete_timer: dict[object] = dict()
 
-    async def connect(self, websocket: WebSocket, games: dict, order: int):
-        room_id = games["id"]
+    def current(self, room_id: str):
         if room_id not in self.active_connections:
             self.active_connections[room_id] = {}
-        if len(self.active_connections[room_id]) > int(games["user_number"]):
-            return "Too many client"
-        for index in range(int(games["user_number"])):
-            if index not in self.active_connections[room_id]:
-                self.active_connections[room_id][index] = websocket
-                if room_id in self.delete_timer:  # 삭제 예정이었던 방의 경우 delete room counter 초기화
-                    del self.delete_timer[room_id]
-                print('ws연결중')
-                await websocket.accept()
-                print('ws연결성공')
-                return f'{room_id}_{index}'
+        result: list[int] = []
+        for order in self.active_connections[room_id]:
+            result.append(order)
+        return result
+
+    async def connect(self, websocket: WebSocket, games: dict, order: int):
+        room_id = games["id"]
+        self.active_connections[room_id][order] = websocket
+        if room_id in self.delete_timer:  # 삭제 예정이었던 방의 경우 delete room counter 초기화
+            del self.delete_timer[room_id]
+        await websocket.accept()
 
     def disconnect(self, websocket: WebSocket, room_id: str):
         for key in self.active_connections[room_id]:
