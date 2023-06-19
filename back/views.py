@@ -73,15 +73,13 @@ class Views:
         else:
             return None
 
-    async def load_lastedit(self, room_id, before_edit):
+    async def load_room(self, room_id: str):
         last_edit = mongodb.db.room.find_one({"id": room_id})["last_edit"]
         user = list(mongodb.db.user.find(
             {"room_id": room_id}, {"_id": 0, "id": 1, "username": 1, "question": 1}))
         memo = list(mongodb.db.memo.find({"room_id": room_id}, {
             "_id": 0, "id": 1, "answer": 1}))
-        chat = list(mongodb.db.chat.find(
-            {"room_id": room_id, "create_at": {"$gt": before_edit}}, {"_id": 0, "user_id": 1, "create_at": 1, "text": 1}))
-        return {"last_edit": last_edit, "user": user, "memo": memo, "chat": chat}
+        return {"last_edit": last_edit, "user": user, "memo": memo}
 
     async def edit_username(self, user_id: str, username: str):
         mongodb.db.user.update_one(
@@ -135,15 +133,16 @@ class ConnectionManager:
         for key in self.active_connections[room_id]:
             if self.active_connections[room_id][key] == websocket:
                 del self.active_connections[room_id][key]
+                break
         # 접속자 0명 시 delete room counter 시작
-        if self.active_connections[room_id].len() == 0:
+        if len(self.active_connections[room_id]) == 0:
             del self.active_connections[room_id]
             self.delete_timer[room_id] = datetime.datetime.now(
             ) + datetime.timedelta(hours=1)
 
     async def check_del_room(self):
         while True:
-            await time.sleep(600)
+            await time.sleep(10)
             for room_id in self.delete_timer:
                 if self.delete_timer[room_id] < datetime.datetime.now():
                     await self.del_room(room_id)
@@ -171,8 +170,9 @@ class ConnectionManager:
         mongodb.db.chat.delete_many({"room_id": room_id})
 
     async def broadcast(self, room_id: str, message: str):
-        for connection in self.active_connections[room_id]:
-            await self.active_connections[room_id][connection].send_text(message)
+        if (room_id in self.active_connections):
+            for connection in self.active_connections[room_id]:
+                await self.active_connections[room_id][connection].send_text(message)
 
     async def personal_message(self, websocket: WebSocket, message: str):
         await websocket.send_text(message)
