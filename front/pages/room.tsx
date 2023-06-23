@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 
 import Chat from '@components/chat';
-import Loading from '@components/loading';
+import Loading from '@components/loading/room';
 import Game from '@components/game';
 
 import URL from '@data/url';

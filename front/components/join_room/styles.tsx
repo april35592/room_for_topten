@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 
-export const Now = styled.p`
-  width: 60px;
+export const InputID = styled.input`
+  width: 150px;
   height: 40px;
-  border-radius: 25px;
+  border-radius: 15px;
+  margin: 5px;
+  padding: 5px;
   border: 3px solid var(--theme-fore);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: var(--font-size-lg);
+  &:focus {
+    outline: none;
+  }
 `;

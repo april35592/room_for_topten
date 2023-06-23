@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 
 const setScreenSize = () => {
   let vh = window.innerHeight * 0.01;
@@ -24,7 +24,7 @@ const globalStyle = css`
     --font-family-title: 'Black Han Sans';
     --font-size-sm: 12px;
     --font-size-base: 15px;
-    --font-size-lg: 32px;
+    --font-size-lg: 24px;
     --font-size-title: 50px;
     --font-weight-light: 100;
     --font-weight-normal: 400;

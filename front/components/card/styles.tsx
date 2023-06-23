@@ -1,12 +1,5 @@
 import styled from '@emotion/styled';
 
-export const CardTray = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-
 export const CardForm = styled.nav`
   width: 300px;
   height: 400px;
@@ -21,17 +14,4 @@ export const CardForm = styled.nav`
   font-family: var(--font-family-title);
   background-color: var(--theme-back);
   color: var(--theme-fore);
-`;
-
-export const Btn = styled.button`
-  width: 50px;
-  height: 50px;
-  background-color: var(--theme-black);
-  color: var(--theme-indipink);
-  box-shadow: inset 0 0 0 3px var(--theme-black), inset 0 0 0 5px var(--theme-indipink);
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: var(--font-size-lg);
 `;

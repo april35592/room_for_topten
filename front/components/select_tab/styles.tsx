@@ -1,10 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Nav = styled.nav`
-  width: 100%;
-`;
-
-export const Btn = styled.button`
+export const TabBtn = styled.button`
   width: 50%;
   height: 50px;
   background-color: #eec0c6;

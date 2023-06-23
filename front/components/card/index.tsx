@@ -1,6 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import { CardTray, CardForm, Btn } from './styles';
+
+import { CardForm } from './styles';
+import { RoundBtn } from '@styles/button';
+import { SpaceAround } from '@styles/div';
 
 const Card = ({ game = [1] }) => {
   const [num, setNum] = useState(1);
@@ -20,11 +23,11 @@ const Card = ({ game = [1] }) => {
   return (
     <>
       <p>{num}번째 게임입니다.</p>
-      <CardTray>
-        <Btn onClick={tabLeft}>&lt;</Btn>
+      <SpaceAround>
+        <RoundBtn onClick={tabLeft}>&lt;</RoundBtn>
         <CardForm>{game[num - 1]}</CardForm>
-        <Btn onClick={tabRight}>&gt;</Btn>
-      </CardTray>
+        <RoundBtn onClick={tabRight}>&gt;</RoundBtn>
+      </SpaceAround>
     </>
   );
 };

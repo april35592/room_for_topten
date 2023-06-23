@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Nav, Btn } from './styles';
+import { TabBtn } from './styles';
+import { Width100 } from '@styles/div';
 
 const SelectTab = ({ active = 'create' }) => {
   return (
-    <Nav>
+    <Width100>
       <Link to="/">
-        <Btn className={active === 'create' ? 'active' : ''}>Create</Btn>
+        <TabBtn className={active === 'create' ? 'active' : ''}>Create</TabBtn>
       </Link>
       <Link to="/join">
-        <Btn className={active === 'join' ? 'active' : ''}>Join</Btn>
+        <TabBtn className={active === 'join' ? 'active' : ''}>Join</TabBtn>
       </Link>
-    </Nav>
+    </Width100>
   );
 };
 export default SelectTab;

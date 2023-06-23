@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import URL from '@data/url';
 
-import Loading from '@components/loading';
+import Loading from '@components/loading/shuffle';
 import Card from '@components/card';
 
 const Game = ({ userID = '' }) => {

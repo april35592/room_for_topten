@@ -1,9 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FlexColumn, SpaceBetween, SetNumberNow, SetNumberBtn, CreateBtn } from './styles';
 
-import Loading from '@components/loading';
+import { Now } from './styles';
+import { Btn, RoundBtn } from '@styles/button';
+import { AlignCenter, Column } from '@styles/div';
+
+import Loading from '@components/loading/shuffle';
 import URL from '@data/url';
 
 const CreateRoom = () => {
@@ -31,15 +34,15 @@ const CreateRoom = () => {
   return loading ? (
     <Loading />
   ) : (
-    <FlexColumn>
+    <Column>
       <p>인원수</p>
-      <SpaceBetween>
-        <SetNumberBtn onClick={lowerCount}>-</SetNumberBtn>
-        <SetNumberNow>{count}</SetNumberNow>
-        <SetNumberBtn onClick={upperCount}>+</SetNumberBtn>
-      </SpaceBetween>
-      <CreateBtn onClick={create_room}>게임 생성</CreateBtn>
-    </FlexColumn>
+      <AlignCenter>
+        <RoundBtn onClick={lowerCount}>-</RoundBtn>
+        <Now>{count}</Now>
+        <RoundBtn onClick={upperCount}>+</RoundBtn>
+      </AlignCenter>
+      <Btn onClick={create_room}>게임 생성</Btn>
+    </Column>
   );
 };
 
