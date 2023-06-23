@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Div, SetNumber, SetNumberNow, SetNumberBtn, CreateBtn } from './styles';
+import { FlexColumn, SpaceBetween, SetNumberNow, SetNumberBtn, CreateBtn } from './styles';
 
 import Loading from '@components/loading';
 import URL from '@data/url';
@@ -31,15 +31,15 @@ const CreateRoom = () => {
   return loading ? (
     <Loading />
   ) : (
-    <Div>
+    <FlexColumn>
       <p>인원수</p>
-      <SetNumber>
+      <SpaceBetween>
         <SetNumberBtn onClick={lowerCount}>-</SetNumberBtn>
         <SetNumberNow>{count}</SetNumberNow>
         <SetNumberBtn onClick={upperCount}>+</SetNumberBtn>
-      </SetNumber>
+      </SpaceBetween>
       <CreateBtn onClick={create_room}>게임 생성</CreateBtn>
-    </Div>
+    </FlexColumn>
   );
 };
 

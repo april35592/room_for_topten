@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Join.css';
 
 const JoinRoom = () => {
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const JoinRoom = () => {
             setID(e.target.value);
           }}
         />
-        <button type="submit">확인</button>
+        <button type="submit">게임 참여</button>
       </form>
     </section>
   );

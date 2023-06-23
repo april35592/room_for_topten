@@ -22,6 +22,7 @@ const config: Configuration = {
       '@components': path.resolve(__dirname, 'components'),
       '@pages': path.resolve(__dirname, 'pages'),
       '@data': path.resolve(__dirname, 'data'),
+      '@styles': path.resolve(__dirname, 'styles'),
     },
   },
   entry: {
@@ -76,15 +77,9 @@ const config: Configuration = {
   },
   devServer: {
     historyApiFallback: true, // react router
-    port: 3090,
+    port: 3000,
     devMiddleware: { publicPath: '/dist/' },
     static: { directory: path.resolve(__dirname) },
-    proxy: {
-      '/api/': {
-        target: 'http://localhost:3095',
-        changeOrigin: true,
-      },
-    },
   },
 };
 

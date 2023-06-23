@@ -13,7 +13,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@data/*": ["data/*"]
+      "@data/*": ["data/*"],
+      "@styles/*": ["styles/*"]
     }
   },
   "ts-node": {

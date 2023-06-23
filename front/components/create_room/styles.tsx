@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
-export const Div = styled.div`
+export const FlexColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-export const SetNumber = styled.div`
+export const SpaceBetween = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
