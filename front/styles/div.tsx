@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Width100 = styled.nav`
+export const Width100 = styled.div`
   width: 100%;
 `;
 
@@ -22,5 +22,10 @@ export const AlignCenter = styled.div`
 `;
 
 export const Column = styled(AlignCenter)`
+  flex-direction: column;
+`;
+
+export const Main = styled(SpaceBetween)`
+  height: calc(100vh - 100px);
   flex-direction: column;
 `;

@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Btn } from '@styles/button';
-import { InputID } from './styles';
-import { Column } from '@styles/div';
+import { Form, InputID } from './styles';
 
 const JoinRoom = () => {
   const navigate = useNavigate();
@@ -22,20 +21,18 @@ const JoinRoom = () => {
   }, []);
 
   return (
-    <form onSubmit={submitID}>
-      <Column>
-        <span>id를 입력하세요</span>
-        <InputID
-          type="text"
-          autoComplete="off"
-          onChange={(e) => {
-            setID(e.target.value);
-          }}
-          ref={input}
-        />
-        <Btn type="submit">게임 참여</Btn>
-      </Column>
-    </form>
+    <Form onSubmit={submitID}>
+      <span>id를 입력하세요</span>
+      <InputID
+        type="text"
+        autoComplete="off"
+        onChange={(e) => {
+          setID(e.target.value);
+        }}
+        ref={input}
+      />
+      <Btn type="submit">게임 참여</Btn>
+    </Form>
   );
 };
 

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef, RefObject } from 'react';
-import { useParams } from 'react-router';
+import React, { useState, useEffect } from 'react';
 
 import URL from '@data/url';
 
@@ -23,7 +22,7 @@ const Game = ({ userID, pushMS }: GameProps) => {
     load();
   }, []);
 
-  return game.length === 1 ? <Loading /> : <Card game={game} />;
+  return game.length === 1 ? <Loading /> : <Card game={game} order={Number(userID[5]) + 1} />;
 };
 
 export const lendering = async (room_id = '', user_id = `${room_id}_0`) => {
