@@ -22,43 +22,43 @@ app.add_middleware(
 
 @app.websocket("/manager/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str, order: Optional[int] = -1):
-    games = mongodb.db.room.find_one(
-        {"id": room_id}, {"_id": 0, "id": 1, "user_number": 1})
-    user_id = ''
-    if (len(games) < 1):
-        raise HTTPException(status_code=404, detail="not found page")
-    if (order == -1):
-        user = manager.current(room_id)
-        if len(user) > int(games["user_number"]):
-            raise HTTPException(status_code=403, detail="too many users")
-        for index in range(int(games["user_number"])):
-            if index not in user:
-                user_id = f"{room_id}_{index}"
-                order = index
-
-    else:
-        user_id = f"{room_id}_{order}"
-
-    print(f"ws연결중 : {user_id}")
-    await manager.connect(websocket, games, order)
     try:
-        await websocket.receive_text()
-        print(f"ws연결완료 : {user_id}")
-        await manager.personal_message(websocket, f"myID : {user_id}")
-        await manager.broadcast(room_id, f"entry: {user_id}")
-        connected = True
-        while connected:
-            data = await websocket.receive_text()
-            await manager.broadcast(room_id, f"{user_id} chat : {data}")
-            await views.chat(user_id, data)
-            if websocket.client_state.name != 'CONNECTED':
-                connected = False
-                raise WebSocketDisconnect
+        games = mongodb.db.room.find_one(
+            {"id": room_id}, {"_id": 0, "id": 1, "user_number": 1})
+        user_id = ''
+        if (len(games) < 1):
+            raise HTTPException(status_code=404, detail="not found page")
 
-    except WebSocketDisconnect:
-        print(f"exit : {user_id}")
-        manager.disconnect(websocket, room_id)
-        await manager.broadcast(room_id, f"exit : {user_id}")
+        user = manager.current(room_id)
+        print(room_id + ': ' + str(user))
+        if (order == -1):
+            if len(user) >= int(games["user_number"]):
+                raise HTTPException(status_code=403, detail="too many users")
+            for index in range(int(games["user_number"])):
+                if index not in user:
+                    user_id = f"{room_id}_{index}"
+                    order = index
+
+        else:
+            user_id = f"{room_id}_{order}"
+
+        print(f"ws연결중 : {user_id}")
+        await manager.connect(websocket, games, order)
+        try:
+            await websocket.receive_text()
+            print(f"ws연결완료 : {user_id}")
+            await manager.personal_message(websocket, f"myID : {user_id}")
+            await manager.broadcast(room_id, f"entry: {user_id}")
+            if (user_id != ''):
+                while True:
+                    data = await websocket.receive_text()
+                    await manager.broadcast(room_id, f"{user_id} chat : {data}")
+                    await views.chat(user_id, data)
+
+        except WebSocketDisconnect:
+            print(f"exit : {user_id}")
+            await manager.disconnect(websocket, room_id)
+            await manager.broadcast(room_id, f"exit : {user_id}")
 
     except HTTPException:
         return 'error'
@@ -85,7 +85,7 @@ async def join_room(room_id: str, user_id: str):
         raise HTTPException(status_code=404, detail="Room not found")
 
 
-@app.get("/{room_id}")
+@app.get("room/{room_id}")
 async def load_room(room_id: str):
     return await views.load_room(room_id)
 

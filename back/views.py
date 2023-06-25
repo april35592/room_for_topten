@@ -112,7 +112,6 @@ class Views:
 class ConnectionManager:
     def __init__(self):
         self.active_connections: dict[dict[WebSocket]] = dict()
-        self.delete_timer: dict[object] = dict()
 
     def current(self, room_id: str):
         if room_id not in self.active_connections:
@@ -125,45 +124,40 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, games: dict, order: int):
         room_id = games["id"]
         self.active_connections[room_id][order] = websocket
-        if room_id in self.delete_timer:  # 삭제 예정이었던 방의 경우 delete room counter 초기화
-            del self.delete_timer[room_id]
         await websocket.accept()
 
-    def disconnect(self, websocket: WebSocket, room_id: str):
+    async def disconnect(self, websocket: WebSocket, room_id: str):
         for key in self.active_connections[room_id]:
             if self.active_connections[room_id][key] == websocket:
                 del self.active_connections[room_id][key]
                 break
         # 접속자 0명 시 delete room counter 시작
-        if len(self.active_connections[room_id]) == 0:
-            del self.active_connections[room_id]
-            self.delete_timer[room_id] = datetime.datetime.now(
-            ) + datetime.timedelta(hours=1)
+        # if len(self.active_connections[room_id]) == 0:
+        #     print('del room 준비')
+        #     del self.active_connections[room_id]
+        #     self.del_room(room_id)
 
-    async def check_del_room(self):
-        while True:
-            await time.sleep(10)
-            for room_id in self.delete_timer:
-                if self.delete_timer[room_id] < datetime.datetime.now():
-                    await self.del_room(room_id)
-                    del self.delete_timer[room_id]
-
-    async def del_room(room_id):
-        games = await mongodb.db.room.find_one({"id": room_id}, {"_id": 0, "first_edit": 1, "last_edit": 1, "games": 1})
-        user = await mongodb.db.user.find({"room_id": room_id}, {"_id": 0, "id": 1, "username": 1, "question": 1})
-        memo = await mongodb.db.memo.find({"room_id": room_id}, {"_id": 0, "id": 1, "answer": 1})
-        chat = await mongodb.db.chat.find({"room_id": room_id}, {"_id": 0, "user_id": 1, "create_at": 1, "text": 1})
-        await mongodb.db.room.insert_one(
-            dict(
-                id=room_id,
-                first_edit=games["first_edit"],
-                last_edit=games["last_edit"],
-                games=games["games"],
-                users=user,
-                memo=memo,
-                chat=chat
-            )
-        )
+    def del_room(self, room_id):
+        print('delroom: ' + room_id)
+        # games = mongodb.db.room.find_one(
+        #     {"id": room_id}, {"_id": 0, "first_edit": 1, "last_edit": 1, "games": 1})
+        # user = mongodb.db.user.find({"room_id": room_id}, {
+        #                             "_id": 0, "id": 1, "username": 1, "question": 1})
+        # memo = mongodb.db.memo.find({"room_id": room_id}, {
+        #                             "_id": 0, "id": 1, "answer": 1})
+        # chat = mongodb.db.chat.find({"room_id": room_id}, {
+        #                             "_id": 0, "user_id": 1, "create_at": 1, "text": 1})
+        # mongodb.db.room.insert_one(
+        #     dict(
+        #         id=room_id,
+        #         first_edit=games["first_edit"],
+        #         last_edit=games["last_edit"],
+        #         games=games["games"],
+        #         users=json.dumps(user),
+        #         memo=json.dumps(memo),
+        #         chat=json.dumps(chat)
+        #     )
+        # )
         mongodb.db.room.delete_one({"id": room_id})
         mongodb.db.user.delete_many({"room_id": room_id})
         mongodb.db.memo.delete_many({"room_id": room_id})

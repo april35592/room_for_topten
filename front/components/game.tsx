@@ -6,7 +6,12 @@ import URL from '@data/url';
 import Loading from '@components/loading/shuffle';
 import Card from '@components/card';
 
-const Game = ({ userID = '' }) => {
+type GameProps = {
+  userID: string;
+  pushMS: (text: string) => void;
+};
+
+const Game = ({ userID, pushMS }: GameProps) => {
   const room_id = userID.slice(0, 4);
   const [game, setGame] = useState([0]);
 
