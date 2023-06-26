@@ -7,7 +7,7 @@ import { Btn, RoundBtn } from '@styles/button';
 import { AlignCenter, Column } from '@styles/div';
 
 import Loading from '@components/loading/shuffle';
-import URL from '@data/url';
+import URL from '@assets/url';
 
 const CreateRoom = () => {
   const navigate = useNavigate();

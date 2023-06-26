@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import URL from '@data/url';
+import URL from '@assets/url';
 
 import Loading from '@components/loading/shuffle';
-import Card from '@components/card';
+import Card from '@components/room/card';
 import { Main } from './styles';
 
 type GameProps = {

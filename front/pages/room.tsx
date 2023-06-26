@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router';
 
-import WS from '@components/websocket';
+import WS from '@components/room/websocket';
 import { Main } from '@styles/div';
 import AccessContext from '@context/access';
 

@@ -13,7 +13,7 @@
     "paths": {
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@data/*": ["data/*"],
+      "@assets/*": ["assets/*"],
       "@styles/*": ["styles/*"],
       "@context/*": ["context/*"]
     }

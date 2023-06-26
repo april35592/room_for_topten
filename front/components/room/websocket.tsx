@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 
-import Chat from '@components/chat';
+import Chat from '@components/room/chat';
 import Loading from '@components/loading/room';
-import Game from '@components/game';
-import URL from '@data/url';
+import Game from '@components/room/game';
+import URL from '@assets/url';
 import AccessContext from '@context/access';
 
 type WSProps = {

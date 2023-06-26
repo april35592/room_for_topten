@@ -21,7 +21,7 @@ const config: Configuration = {
     alias: {
       '@components': path.resolve(__dirname, 'components'),
       '@pages': path.resolve(__dirname, 'pages'),
-      '@data': path.resolve(__dirname, 'data'),
+      '@assets': path.resolve(__dirname, 'assets'),
       '@styles': path.resolve(__dirname, 'styles'),
       '@context': path.resolve(__dirname, 'context'),
     },
