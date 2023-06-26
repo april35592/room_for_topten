@@ -65,7 +65,7 @@ const globalStyle = css`
   }
 
   #container {
-    width: 600px;
+    width: 800px;
     height: 100vh;
     background-color: var(--theme-back);
     box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
@@ -74,9 +74,21 @@ const globalStyle = css`
     justify-content: space-between;
   }
 
+  @media (max-width: 800px) {
+    #container {
+      width: 600px;
+    }
+  }
+
   @media (max-width: 600px) {
-    #root {
-      width: 100vw;
+    #container {
+      width: 400px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    #container {
+      width: 100%;
     }
   }
 `;

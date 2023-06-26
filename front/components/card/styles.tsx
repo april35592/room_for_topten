@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const CardForm = styled.div`
-  width: 280px;
-  height: 200px;
+  width: 240px;
+  height: 160px;
   border-radius: 15px;
   padding: 20px;
   display: flex;

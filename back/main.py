@@ -38,6 +38,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, order: Optional
                 if index not in user:
                     user_id = f"{room_id}_{index}"
                     order = index
+                    break
 
         else:
             user_id = f"{room_id}_{order}"
@@ -48,17 +49,17 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, order: Optional
             await websocket.receive_text()
             print(f"ws연결완료 : {user_id}")
             await manager.personal_message(websocket, f"myID : {user_id}")
-            await manager.broadcast(room_id, f"entry: {user_id}")
+            await manager.broadcast(room_id, f"entry: {user_id}님이 들어왔습니다.")
             if (user_id != ''):
                 while True:
                     data = await websocket.receive_text()
-                    await manager.broadcast(room_id, f"{user_id} chat : {data}")
+                    await manager.broadcast(room_id, f"chat : {user_id} : {data}")
                     await views.chat(user_id, data)
 
         except WebSocketDisconnect:
             print(f"exit : {user_id}")
             await manager.disconnect(websocket, room_id)
-            await manager.broadcast(room_id, f"exit : {user_id}")
+            await manager.broadcast(room_id, f"exit : {user_id}님이 나가셨습니다.")
 
     except HTTPException:
         return 'error'
@@ -94,21 +95,21 @@ async def load_room(room_id: str):
 async def edit_username(user_id: str, username: str = Form()):
     await views.edit_username(user_id, username)
     manager.broadcast(
-        user_id[0, 4], f"chg  : {user_id}'s username : {username}")
+        user_id[0, 4], f"chg  : {user_id}의 username : {username}")
 
 
 @app.patch("/question/{user_id}")
 async def edit_question(user_id: str, question: str = Form()):
     await views.edit_question(user_id, question)
     manager.broadcast(
-        user_id[0, 4], f"chg  : {user_id}'s question : {question}")
+        user_id[0, 4], f"chg  : {user_id}의 question : {question}")
 
 
 @app.patch("/answer/{memo_id}")
 async def edit_answer(memo_id: str, answer: str = Form()):
     await views.edit_answer(memo_id, answer)
     manager.broadcast(
-        memo_id[0, 4], f"chg  : {memo_id[0,6]}'s answer : {answer}")
+        memo_id[0, 4], f"chg  : {memo_id[0,6]}의 {int(memo_id[8])+1}번째 게임 answer : {answer}")
 
 
 @app.on_event("startup")

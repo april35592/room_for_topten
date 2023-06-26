@@ -25,7 +25,14 @@ export const Column = styled(AlignCenter)`
   flex-direction: column;
 `;
 
-export const Main = styled(SpaceBetween)`
+export const Main = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
   height: calc(100vh - 100px);
-  flex-direction: column;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;

@@ -14,6 +14,7 @@ type WSProps = {
 
 const WS = ({ children, room_id, user_id, setID }: WSProps) => {
   const [ms, setMS] = useState([`room <${room_id}>에 입장중입니다.`]);
+  const [on, setOn] = useState(false);
   let ws = useRef<WebSocket | null>(null);
   useEffect(() => {
     ws.current = new WebSocket(
@@ -33,7 +34,12 @@ const WS = ({ children, room_id, user_id, setID }: WSProps) => {
         if (message.slice(0, 4) === 'myID') {
           setID(event.data.slice(7, 14));
         } else {
-          setMS([...ms, message]);
+          if (on === false) {
+            setOn(true);
+            setMS([message.slice(7)]);
+          } else {
+            setMS([...ms, message.slice(7)]);
+          }
         }
       };
     }
@@ -49,8 +55,13 @@ const WS = ({ children, room_id, user_id, setID }: WSProps) => {
 
   return (
     <>
-      {children}
-      {user_id === '' ? <Loading /> : <Game userID={user_id} pushMS={send_message} />}
+      {user_id === '' ? (
+        <Loading />
+      ) : (
+        <Game userID={user_id} pushMS={send_message}>
+          {children}
+        </Game>
+      )}
       {ws === null ? null : <Chat ms={ms} pushMS={send_message} />}
     </>
   );

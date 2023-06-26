@@ -1,11 +1,16 @@
 import styled from '@emotion/styled';
 
-export const Chatroom = styled.div`
+export const Chatroom = styled.aside`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
-  height: 200px;
+  width: 400px;
+  height: 100%;
+  background-color: rgba(120, 120, 120, 0.3);
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 
   div:first-child {
     width: 100%;
@@ -18,10 +23,17 @@ export const Chatroom = styled.div`
     }
   }
 
+  @media (max-width: 800px) {
+    height: 300px;
+
+    @media (max-height: 660px) {
+      height: calc(100vh - 360px);
+    }
+  }
+
   form {
     width: 100%;
     height: 50px;
-
     input {
       margin: 5px;
       width: calc(100% - 95px);
@@ -30,6 +42,7 @@ export const Chatroom = styled.div`
       margin: 5px;
       padding: 5px;
       border: 3px solid var(--theme-fore);
+      background-color: var(--theme-back);
       &:focus {
         outline: none;
       }

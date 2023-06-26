@@ -4,13 +4,15 @@ import URL from '@data/url';
 
 import Loading from '@components/loading/shuffle';
 import Card from '@components/card';
+import { Main } from './styles';
 
 type GameProps = {
+  children: React.ReactNode;
   userID: string;
   pushMS: (text: string) => void;
 };
 
-const Game = ({ userID, pushMS }: GameProps) => {
+const Game = ({ children, userID, pushMS }: GameProps) => {
   const room_id = userID.slice(0, 4);
   const [game, setGame] = useState([0]);
 
@@ -22,7 +24,15 @@ const Game = ({ userID, pushMS }: GameProps) => {
     load();
   }, []);
 
-  return game.length === 1 ? <Loading /> : <Card game={game} order={Number(userID[5]) + 1} />;
+  return game.length === 1 ? (
+    <Loading />
+  ) : (
+    <Main>
+      {children}
+      <Card game={game} order={Number(userID[5]) + 1} />
+      <div></div>
+    </Main>
+  );
 };
 
 export const lendering = async (room_id = '', user_id = `${room_id}_0`) => {
