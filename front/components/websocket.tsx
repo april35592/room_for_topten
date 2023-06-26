@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 
 import Chat from '@components/chat';
 import Loading from '@components/loading/room';
 import Game from '@components/game';
 import URL from '@data/url';
+import AccessContext from '@context/access';
 
 type WSProps = {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const WS = ({ children, room_id, user_id, setID }: WSProps) => {
   const [ms, setMS] = useState([`room <${room_id}>에 입장중입니다.`]);
   const [on, setOn] = useState(false);
   let ws = useRef<WebSocket | null>(null);
+
   useEffect(() => {
     ws.current = new WebSocket(
       `ws://${URL.server_url}/manager/${room_id}${user_id != '' ? '?order=' + user_id[5] : ''}`,

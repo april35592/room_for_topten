@@ -23,6 +23,7 @@ const config: Configuration = {
       '@pages': path.resolve(__dirname, 'pages'),
       '@data': path.resolve(__dirname, 'data'),
       '@styles': path.resolve(__dirname, 'styles'),
+      '@context': path.resolve(__dirname, 'context'),
     },
   },
   entry: {
