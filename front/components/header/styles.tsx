@@ -13,7 +13,10 @@ export const Head = styled.header`
 export const Title = styled.h1`
   font-family: var(--font-family-title);
   font-size: var(--font-size-title);
-  color: var(--theme-white);
+  color: transparent;
+  background: linear-gradient(to right, var(--theme-skyblue), var(--theme-indipink));
+  background-clip: text;
+  -webkit-background-clip: text;
 `;
 
 export const HowTo = styled.button`
