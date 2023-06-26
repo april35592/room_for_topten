@@ -12,7 +12,7 @@ export const Chatroom = styled.aside`
     width: 100%;
   }
 
-  div:first-child {
+  div:firstchild {
     width: 100%;
     padding: 5px;
     height: calc(100% - 50px);
@@ -24,10 +24,10 @@ export const Chatroom = styled.aside`
   }
 
   @media (max-width: 800px) {
-    height: 300px;
+    height: 240px;
 
-    @media (max-height: 660px) {
-      height: calc(100vh - 360px);
+    @media (max-height: 620px) {
+      height: calc(100% - 240px);
     }
   }
 

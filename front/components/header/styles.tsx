@@ -20,6 +20,6 @@ export const HowTo = styled.button`
   width: 80px;
   height: 30px;
   border-radius: 10px;
-  border: 3px solid var(--theme-indipink);
-  color: var(--theme-indipink);
+  border: 3px solid var(--theme-white);
+  color: var(--theme-white);
 `;
