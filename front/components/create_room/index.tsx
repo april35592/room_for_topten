@@ -3,11 +3,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Now } from './styles';
+import { create } from '@apis/create';
 import { Btn, RoundBtn } from '@styles/button';
 import { AlignCenter, Column } from '@styles/div';
-
 import Loading from '@components/loading/shuffle';
-import URL from '@assets/url';
 
 const CreateRoom = () => {
   const navigate = useNavigate();
@@ -44,19 +43,6 @@ const CreateRoom = () => {
       <Btn onClick={create_room}>게임 생성</Btn>
     </Column>
   );
-};
-
-export const create = async (user_number = 0) => {
-  if (10 > user_number && user_number > 2) {
-    return await fetch(`http://${URL.server_url}/${user_number}`, {
-      method: 'POST',
-      cache: 'no-store',
-    }).then((res) => {
-      return res.json();
-    });
-  } else {
-    return 'err count';
-  }
 };
 
 export default CreateRoom;

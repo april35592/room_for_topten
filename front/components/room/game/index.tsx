@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import URL from '@assets/url';
-
 import Loading from '@components/loading/shuffle';
 import Card from '@components/room/card';
 import { Main } from './styles';
+import { rendering } from '@apis/rendering';
 
 type GameProps = {
   children: React.ReactNode;
@@ -18,7 +17,7 @@ const Game = ({ children, userID, pushMS }: GameProps) => {
 
   useEffect(() => {
     const load = async () => {
-      const data = await lendering(room_id, userID);
+      const data = await rendering(room_id, userID);
       setGame(data.game);
     };
     load();
@@ -33,16 +32,6 @@ const Game = ({ children, userID, pushMS }: GameProps) => {
       <div></div>
     </Main>
   );
-};
-
-export const lendering = async (room_id = '', user_id = `${room_id}_0`) => {
-  return await fetch(`http://${URL.server_url}/${room_id}/${user_id}`, {
-    method: 'GET',
-    cache: 'no-store',
-    mode: 'cors',
-  }).then((res) => {
-    return res.json();
-  });
 };
 
 export default Game;

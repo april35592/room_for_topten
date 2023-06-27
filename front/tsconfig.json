@@ -11,11 +11,12 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"],
+      "@apis/*": ["apis/*"],
       "@assets/*": ["assets/*"],
-      "@styles/*": ["styles/*"],
-      "@context/*": ["context/*"]
+      "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@pages/*": ["pages/*"],
+      "@styles/*": ["styles/*"]
     }
   },
   "ts-node": {

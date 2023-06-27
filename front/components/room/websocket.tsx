@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Chat from '@components/room/chat';
 import Loading from '@components/loading/room';
 import Game from '@components/room/game';
 import URL from '@assets/url';
-import AccessContext from '@context/access';
 
 type WSProps = {
   children: React.ReactNode;
@@ -20,7 +19,7 @@ const WS = ({ children, room_id, user_id, setID }: WSProps) => {
 
   useEffect(() => {
     ws.current = new WebSocket(
-      `ws://${URL.server_url}/manager/${room_id}${user_id != '' ? '?order=' + user_id[5] : ''}`,
+      `wss://${URL.server_url}/manager/${room_id}${user_id != '' ? '?order=' + user_id[5] : ''}`,
     );
     ws.current.onopen = () => {
       if (ws.current) {

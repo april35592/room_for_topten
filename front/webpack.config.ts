@@ -19,11 +19,12 @@ const config: Configuration = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      '@components': path.resolve(__dirname, 'components'),
-      '@pages': path.resolve(__dirname, 'pages'),
+      '@apis': path.resolve(__dirname, 'apis'),
       '@assets': path.resolve(__dirname, 'assets'),
-      '@styles': path.resolve(__dirname, 'styles'),
+      '@components': path.resolve(__dirname, 'components'),
       '@context': path.resolve(__dirname, 'context'),
+      '@pages': path.resolve(__dirname, 'pages'),
+      '@styles': path.resolve(__dirname, 'styles'),
     },
   },
   entry: {

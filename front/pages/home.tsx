@@ -24,6 +24,7 @@ const Home = () => {
       <div id="container">
         <Header openHow={openHow} />
         <Routes>
+          <Route path="/index.html" element={<Create />} />
           <Route path="/" element={<Create />} />
           <Route path="/join" element={<Join />} />
           <Route path="/room/:room_id" element={<Room />} />
