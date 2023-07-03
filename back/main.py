@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 
@@ -92,21 +92,21 @@ async def load_room(room_id: str):
 
 
 @app.patch("/username/{user_id}")
-async def edit_username(user_id: str, username: str = Form()):
+async def edit_username(user_id: str, username: str):
     await views.edit_username(user_id, username)
     manager.broadcast(
-        user_id[0, 4], f"chg  : {user_id}의 username : {username}")
+        user_id[0:4], f"chg  : {user_id}의 username : {username}")
 
 
 @app.patch("/question/{user_id}")
-async def edit_question(user_id: str, question: str = Form()):
+async def edit_question(user_id: str, question: str):
     await views.edit_question(user_id, question)
     manager.broadcast(
         user_id[0, 4], f"chg  : {user_id}의 question : {question}")
 
 
 @app.patch("/answer/{memo_id}")
-async def edit_answer(memo_id: str, answer: str = Form()):
+async def edit_answer(memo_id: str, answer: str):
     await views.edit_answer(memo_id, answer)
     manager.broadcast(
         memo_id[0, 4], f"chg  : {memo_id[0,6]}의 {int(memo_id[8])+1}번째 게임 answer : {answer}")
